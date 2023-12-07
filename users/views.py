@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import auth, messages
 
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
+from users.models import User
 
 
 def login(request):
@@ -12,7 +13,7 @@ def login(request):
             username = request.POST['username']
             password = request.POST['password']
             user = auth.authenticate(username=username, password=password)
-            if user and user.is_active:
+            if user:  #  and user.is_active
                 auth.login(request, user)
                 return HttpResponseRedirect(reverse('index'))
     else:
@@ -38,7 +39,7 @@ def registration(request):
 
 def profile(request):
     if request.method == 'POST':
-        form = UserProfileForm(instance=request.user, data=request.POST)
+        form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('users:profile'))

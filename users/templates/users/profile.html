@@ -16,18 +16,22 @@
                      src="{% if user.image %} {{ user.image.url }} {% else %} {% static 'vendor/img/users/default_avatar.jpg' %} {% endif %}"
                      class="img-thumbnail">
             </div>
-            <form action="{% url 'user:profile' %} " method="post">
+            <form action="{% url 'users:profile' %} " method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="small mb-1" for="{{ form.first_name.id_for_label }}">Имя</label>
+                            <label class="small mb-1" for="{{ form.first_name.id_for_label }}">
+                                Имя
+                            </label>
                             {{ form.first_name }}
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="small mb-1" for="{{ form.last_name.id_for_label }}">Фамилия</label>
+                            <label class="small mb-1" for="{{ form.last_name.id_for_label }}">
+                                Фамилия
+                            </label>
                             {{ form.last_name }}
                         </div>
                     </div>
@@ -36,23 +40,29 @@
                     <div class="col-lg-12">
                         <div class="custom-file">
                             {{ form.image }}
-                            <label class="custom-file-label" for="{{ form.image.id_for_label }}">Выберите изображение</label>
+                            <label class="custom-file-label" for="{{ form.image.id_for_label }}">
+                                Выберите изображение
+                            </label>
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-lg-6">
-                        <label class="small mb-1" for="{{ form.username.id_for_label }}">Имя пользователя</label>
+                        <label class="small mb-1" for="{{ form.username.id_for_label }}">
+                            Имя пользователя
+                        </label>
                         {{ form.username }}
-                               aria-describedby="usernameHelp"
-                               value="valeriy" disabled/>
+{#                               aria-describedby="usernameHelp"#}
+{#                               value="valeriy" disabled/>#}
                     </div>
                     <div class="col-lg-6">
-                        <label class="small mb-1" for="inputEmailAddress">Адрес электронной
-                            почты</label>
-                        <input class="form-control py-4" id="inputEmailAddress" type="email"
-                               aria-describedby="emailHelp"
-                               value="valerypavlikov@yandex.ru" disabled/>
+                        <label class="small mb-1" for=" {{ form.email.id_for_label }}">
+                            Адрес электронной почты
+                        </label>
+                        {{ form.email }}
+{#                        <input class="form-control py-4" id="inputEmailAddress" type="email"#}
+{#                               aria-describedby="emailHelp"#}
+{#                               value="valerypavlikov@yandex.ru" disabled/>#}
                     </div>
                 </div>
                 <div class="form-row">
