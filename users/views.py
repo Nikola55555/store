@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.contrib import auth, messages
 
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
-from users.models import User
+from products.models import Basket
+from django.contrib.auth.decorators import login_required
 
 
 def login(request):
@@ -13,7 +14,7 @@ def login(request):
             username = request.POST['username']
             password = request.POST['password']
             user = auth.authenticate(username=username, password=password)
-            if user:  #  and user.is_active
+            if user:  # and user.is_active
                 auth.login(request, user)
                 return HttpResponseRedirect(reverse('index'))
     else:
@@ -36,7 +37,7 @@ def registration(request):
     context = {'form': form}
     return render(request, 'users/registration.html', context)
 
-
+@login_required
 def profile(request):
     if request.method == 'POST':
         form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
@@ -47,5 +48,16 @@ def profile(request):
             print(form.errors)
     else:
         form = UserProfileForm(instance=request.user)
-    context = {'title': 'Store-Профиль', 'form': form}
+
+    context = {
+        'title': 'Store-Профиль',
+        'form': form,
+        'baskets': Basket.objects.filter(user=request.user),
+
+    }
     return render(request, 'users/profile.html', context)
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
